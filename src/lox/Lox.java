@@ -1,7 +1,7 @@
+package lox;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -29,6 +29,7 @@ public class Lox {
         run(new String(bytes, Charset.defaultCharset()));
 
         // Indicate an error in the exit code
+        // for now, if error occurs, exit
         if (hadError) System.exit(65);
     }
 
@@ -36,10 +37,12 @@ public class Lox {
         InputStreamReader input = new InputStreamReader(System.in);
         BufferedReader reader = new BufferedReader(input);
 
+
+        System.out.println("Lex REPL");
         for (;;) {
             System.out.print("> ");
             String line = reader.readLine();
-            if (line == null) {
+            if (line != null) {
                 run(line);
                 hadError = false;
             }
@@ -56,7 +59,7 @@ public class Lox {
         }
     }
 
-    static void error(int lnine, String message) {
+    static void error(int line, String message) {
         report(line, "", message);
     }
 
